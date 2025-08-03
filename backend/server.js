@@ -21,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use("/api/posts", postsRoutes);
 app.use("/api/users", userRoutes);
+app.use(express.static("uploads"));//relative path is stored
 
 // Root route
 app.get("/", (req, res) => {

@@ -27,3 +27,55 @@ Content-Type: application/json
 }
 
 
+### Update Profile Data (GET)
+GET http://localhost:9000/api/users/update_profile_data
+Content-Type: application/json
+
+{
+  "token": "d9953d415df9913680f4c583303715307e56052ec730a1c1ad3c5d19d0073299",
+  "bio": "Full-stack developer passionate about building scalable web apps.",
+  "currentPost": "Software Engineer at CodeBase Inc.",
+  "pastWork": [
+    {
+      "company": "DevWorks",
+      "role": "Frontend Developer",
+      "duration": "Jan 2023 - Dec 2023"
+    }
+  ]
+}
+
+### Get all user profiles
+GET http://localhost:9000/api/users/get_all_users
+
+### Register user 1
+POST http://localhost:9000/api/users/register
+Content-Type: application/json
+
+{
+  "username": "riya_verma",
+  "password": "pass1234",
+  "email": "riya.verma@example.com",
+  "name": "Riya Verma"
+}
+
+### Register user 2
+POST http://localhost:9000/api/users/register
+Content-Type: application/json
+
+{
+  "username": "arjun_k",
+  "password": "secure789",
+  "email": "arjun.k@example.com",
+  "name": "Arjun Kapoor"
+}
+
+### Register user 3
+POST http://localhost:9000/api/users/register
+Content-Type: application/json
+
+{
+  "username": "neha_shah",
+  "password": "neha12345",
+  "email": "neha.shah@example.com",
+  "name": "Neha Shah"
+}

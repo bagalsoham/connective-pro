@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { activeController } from "../controllers/posts.controllers.js";
+import { activeCheck } from "../controllers/posts.controllers.js";
 
 const router = Router();
 
-router.get("/", activeController);
+router.get("/", activeCheck);
 
 export default router;

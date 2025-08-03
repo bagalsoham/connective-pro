@@ -1,0 +1,20 @@
+### Register a new user
+POST http://localhost:9000/api/users/register
+Content-Type: application/json
+
+{
+  "username": "soham123",
+  "password": "mypassword",
+  "email": "soham@example.com",
+  "name": "Soham Bagal"
+}
+
+###login
+POST http://localhost:9000/api/users/login
+Content-Type: application/json
+
+{
+  "email": "soham@example.com",
+  "password": "a"
+}
+

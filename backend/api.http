@@ -3,10 +3,10 @@ POST http://localhost:9000/api/users/register
 Content-Type: application/json
 
 {
-  "username": "soham123",
+  "username": "soham12",
   "password": "mypassword",
-  "email": "soham@example.com",
-  "name": "Soham Bagal"
+  "email": "sohamm@example.com",
+  "name": "Soham"
 }
 
 ###login
@@ -14,7 +14,16 @@ POST http://localhost:9000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "soham@example.com",
-  "password": "a"
+  "email": "sohamm@example.com",
+  "password": "mypassword"
 }
+
+### Get user info via POST
+GET  http://localhost:9000/api/users/get_user_and_profile
+Content-Type: application/json
+
+{
+  "token": "22332b7c396b2033798019e9fd13ae5fdfbd1e9d39a1549744fa6812655c16ce"
+}
+
 

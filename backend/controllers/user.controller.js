@@ -97,7 +97,9 @@ export const login = async (req, res) => {
         const token = crypto.randomBytes(32).toString("hex");
         await User.updateOne({ _id: user._id }, { token });
 
-        return res.json({ token });
+
+
+        return res.json({ token:token });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

@@ -1,12 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./reducer/authReducer";
 
-//steps for state management
-/* Submit action 
-Handle action in its reducer
-register here -> reducer 
-*/
-
-
-export const store =  configureStore({
-    reducer:{}
-})
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+  },
+});

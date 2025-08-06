@@ -19,8 +19,9 @@ app.use(express.json());
 // If you place it after routes, `req.body` will be undefined in your POST/PUT requests.
 
 // Routes
-app.use("/api/posts", postsRoutes);
-app.use("/api/users", userRoutes);
+app.use("/posts", postsRoutes);
+app.use("/users", userRoutes);
+
 app.use(express.static("uploads"));//relative path is stored
 
 // Root route

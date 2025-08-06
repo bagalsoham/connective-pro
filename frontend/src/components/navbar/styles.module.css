@@ -10,13 +10,18 @@
     display: flex;
 }
 
-.buttonJoin{
-    background: #cd8987;
+.buttonJoin {
+    background-color: #cd8987;
+    color: #ffffff;
+    border: none;
     border-radius: 10px;
-    padding-block: 0.6rem;
-    padding-inline: 1.2rem;
-    color: white;
-    font-size: 0.7rem;
-    font-weight: bold;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    -webkit-user-select: none;
 }

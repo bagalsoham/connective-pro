@@ -44,7 +44,7 @@ Content-Type: application/json
   ]
 }
 
-### Get all user profiles
+### Get all user profiles  
 GET http://localhost:9000/api/users/get_all_users
 
 ### Register user 1

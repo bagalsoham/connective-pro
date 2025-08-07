@@ -12,7 +12,7 @@ function LoginComponent() {
 
   useEffect(() => {
     if (authState.loggedIn) {
-        router.push("/dashboard");
+      router.push("/dashboard");
     }
   }, [authState.loggedIn, router]);
 
@@ -24,12 +24,14 @@ function LoginComponent() {
 
   const handleRegister = () => {
     console.log("Registering");
-    dispatch(registerUser({
-      username,
-      password,
-      email,
-      name
-    }));
+    dispatch(
+      registerUser({
+        username,
+        password,
+        email,
+        name,
+      })
+    );
   };
 
   const handleLogin = () => {
@@ -45,35 +47,21 @@ function LoginComponent() {
             <p className={styles.cardLeft__heading}>
               {isLoginMethod ? "Sign In" : "Sign Up"}
             </p>
-            
+
             {/* Show loading state */}
             {authState.isLoading && <p>Loading...</p>}
-            
+
             {/* Show messages */}
             {authState.message && (
-              <p style={{ 
-                color: authState.isError ? 'red' : 'green',
-                margin: '10px 0' 
-              }}>
+              <p
+                style={{
+                  color: authState.isError ? "red" : "green",
+                  margin: "10px 0",
+                }}
+              >
                 {authState.message}
               </p>
             )}
-            
-            {/* Toggle between login/signup */}
-            <div style={{ marginBottom: '20px' }}>
-              <button 
-                onClick={() => setIsLoginMethod(!isLoginMethod)}
-                style={{ 
-                  padding: '5px 10px', 
-                  cursor: 'pointer',
-                  backgroundColor: '#f0f0f0',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px'
-                }}
-              >
-                Switch to {isLoginMethod ? 'Sign Up' : 'Sign In'}
-              </button>
-            </div>
 
             <div className={styles.inputContainer}>
               {/* Show username and name only for signup */}
@@ -95,7 +83,7 @@ function LoginComponent() {
                   />
                 </div>
               )}
-              
+
               <input
                 onChange={(e) => setEmailAddress(e.target.value)}
                 className={styles.inputField}
@@ -103,7 +91,7 @@ function LoginComponent() {
                 placeholder="Email"
                 value={email}
               />
-              
+
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 className={styles.inputField}
@@ -111,11 +99,11 @@ function LoginComponent() {
                 placeholder="Password"
                 value={password}
               />
-              
+
               <div
                 onClick={() => {
                   if (authState.isLoading) return; // Prevent multiple clicks
-                  
+
                   if (isLoginMethod) {
                     handleLogin();
                   } else {
@@ -123,16 +111,53 @@ function LoginComponent() {
                   }
                 }}
                 className={styles.buttonWithOutLine}
-                style={{ 
-                  cursor: authState.isLoading ? 'not-allowed' : 'pointer',
-                  opacity: authState.isLoading ? 0.6 : 1
+                style={{
+                  cursor: authState.isLoading ? "not-allowed" : "pointer",
+                  opacity: authState.isLoading ? 0.6 : 1,
                 }}
               >
-                <p>{authState.isLoading ? 'Processing...' : (isLoginMethod ? "Sign In" : "Sign Up")}</p>
+                <p>
+                  {authState.isLoading
+                    ? "Processing..."
+                    : isLoginMethod
+                    ? "Sign In"
+                    : "Sign Up"}
+                </p>
               </div>
             </div>
           </div>
-          <div className={styles.cardContainer__right}></div>
+
+          <div className={styles.cardContainer__right}>
+            <div className={styles.rightSideContent}>
+              {isLoginMethod ? (
+                // When in login mode, show signup option
+                <div className={styles.switchModeContainer}>
+                  <p className={styles.rightDescription}>
+                    Don't have an account?
+                  </p>
+                  <div
+                    onClick={() => setIsLoginMethod(false)}
+                    className={styles.buttonWithOutLine}
+                  >
+                    <p>Sign Up</p>
+                  </div>
+                </div>
+              ) : (
+                // When in signup mode, show login option
+                <div className={styles.switchModeContainer}>
+                  <p className={styles.rightDescription}>
+                    Already have an account?
+                  </p>
+                  <div
+                    onClick={() => setIsLoginMethod(true)}
+                    className={styles.buttonWithOutLine}
+                  >
+                    <p>Sign In</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </UserLayout>

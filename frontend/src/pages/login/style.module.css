@@ -82,3 +82,68 @@
     outline: none;
     width: 100%;
   }
+  /* Right side content styling */
+.rightSideContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px 30px;
+}
+
+.switchModeContainer {
+  text-align: center;
+  max-width: 280px;
+}
+
+.rightDescription {
+  font-size: 18px;
+  color:black;
+  margin-bottom: 25px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Button styling for right side */
+.switchModeContainer .buttonWithOutLine {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.switchModeContainer .buttonWithOutLine:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.switchModeContainer .buttonWithOutLine p {
+  color: black;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* Optional: Add some responsive design */
+@media (max-width: 768px) {
+  .rightSideContent {
+    padding: 20px 15px;
+  }
+  
+  .rightDescription {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .switchModeContainer .buttonWithOutLine {
+    padding: 10px 25px;
+  }
+  
+  .switchModeContainer .buttonWithOutLine p {
+    font-size: 14px;
+  }
+}

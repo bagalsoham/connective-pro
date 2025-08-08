@@ -1,0 +1,42 @@
+.container {
+    padding: 1.5rem;
+    min-height: 100vh;
+  }
+  
+  .homeContainer {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .homeContainer > div:nth-child(odd){
+    flex:0.2;
+  }
+  .homeContainer > div:nth-child(even){
+    flex:0.6;
+  }
+
+  .homeContainer__leftBar{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+    
+  }
+  .sideBarOption {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    gap: 1.3rem;
+    width: 80%;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: transform 0.2s ease; /* smoother animation */
+  }
+  
+  .sideBarOption:hover {
+    transform: scale(1.03); /* scale both icon + text together */
+  }
+  
+  .sideBarOption > svg {
+    height: 1.4em;
+  }

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { clientServer } from "../../../index.jsx";
+import { Parastoo } from "next/font/google/index.js";
 
 export const loginUser = createAsyncThunk(
     "user/login",
@@ -46,3 +47,37 @@ export const registerUser = createAsyncThunk(
         }
     }
 );
+export const getAboutUser = createAsyncThunk(
+    "user/getAboutUser",
+    async (user, thunkAPI) => {
+        try {
+            // ✅ Add /users prefix to match your route
+            const response = await clientServer.get("/users/get_user_and_profile", {
+                params: {
+                    token: user.token
+                }
+            });
+            return thunkAPI.fulfillWithValue(response.data);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const getAllUsers = createAsyncThunk(
+    "user/getAllUsers",
+    async (_, thunkAPI) => {
+      try {
+        const token = localStorage.getItem("token");
+  
+        // ✅ Call the correct backend route
+        const response = await clientServer.get("/users/get_all_users", {
+          params: { token }, // Send token as query param if backend expects it like that
+        });
+  
+        return thunkAPI.fulfillWithValue(response.data); // Send successful response
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.response?.data || "Failed to fetch users");
+      }
+    }
+  );

@@ -21,7 +21,7 @@ router.route("/update_profile_picture")
 router.route('/register').post(register);
 router.route('/login').post(login);
 router.route("/user_update").post(updateUserProfile);
-router.route("/get_user_and_profile").post(getUserAndProfile); // Note: this should probably be POST since it needs token in body
+router.route("/get_user_and_profile").get(getUserAndProfile);
 router.route("/update_profile_data").post(updateProfileData); // Changed from GET to POST
 router.route("/get_all_users").get(getAllUserProfile);
 router.route("/download_resume").get(downloadProfile); // Keep as GET for now

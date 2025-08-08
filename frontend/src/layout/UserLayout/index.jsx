@@ -1,13 +1,13 @@
-import NavBarComponent from '@/components/navbar'
-import React from 'react'
+// File: src/layout/UserLayout.js
 
-function UserLayout({ children }) {
+import React from 'react';
+import NavBarComponent from '@/components/navbar'; // ✅ Correct import
+
+export default function UserLayout({ children }) {
   return (
     <div>
-    <NavBarComponent/>
+      <NavBarComponent />
       {children}
     </div>
-  )
+  );
 }
-
-export default UserLayout

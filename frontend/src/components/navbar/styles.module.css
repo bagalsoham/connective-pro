@@ -25,3 +25,46 @@
     text-align: center;
     -webkit-user-select: none;
 }
+.greeting {
+    background-color: #88c0d0; /* calm blue */
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.profileButton,
+.logoutButton {
+  background-color: #4b7bec;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logoutButton {
+  background-color: #eb4d4b;
+}
+
+.profileButton:hover {
+  background-color: #3867d6;
+}
+
+.logoutButton:hover {
+  background-color: #c0392b;
+}
+

@@ -1,0 +1,62 @@
+.createPostContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: #fff0f5; /* very light pink */
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
+  }
+  
+  .profileImage {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .postTextarea {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+    min-height: 50px;
+    font-size: 1rem;
+  }
+  
+  .uploadIcon {
+    cursor: pointer;
+    background-color: #fcd7e1;
+    padding: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s;
+  }
+  
+  .uploadIcon:hover {
+    background-color: #fbb6c9;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .postButton {
+    background-color: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+  }
+  
+  .postButton:hover {
+    background-color: #ff1f4b;
+  }
+  

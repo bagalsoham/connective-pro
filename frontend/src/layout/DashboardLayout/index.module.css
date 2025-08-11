@@ -39,4 +39,5 @@
   
   .sideBarOption > svg {
     height: 1.4em;
+    min-width: min-content;   /* Samsung Internet 5.0+ */
   }

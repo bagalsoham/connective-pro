@@ -23,8 +23,8 @@ export const createPost = async (req,res)=>{
             // If a file is uploaded, get the filename
             media: req.file !== undefined ? req.file.filename : "",
         
-            // File type (e.g., image/png, application/pdf)
-            fileType: req.file !== undefined ? req.file.mimetype.split("/") : "",
+            // File type (e.g., image/png, application/pdf) - Fixed: Store as string
+            fileType: req.file !== undefined ? req.file.mimetype : "",
         
             // Optional: You can use spread to copy other fields from req.body if needed
             // ...req.body, // ← Use this if there are more fields to copy automatically
@@ -55,19 +55,20 @@ export const  deletePost = async (req,res)=>{
     if(!user){
         return res.status(404).json({message:"User not found"})
     }
-    const post = await Post.findOne({id:post_id});
+    const post = await Post.findOne({_id:post_id}); // Fixed: Use _id instead of id
     if(!post){
         return res.status(404).json({message:"Post not found"})
     }
     if(post.userId.toString() !== user._id.toString()){
         return res.status(401).json({message:"Unauthorized"})
     }
-    await Post.deletePost({_id:post_id});
+    await Post.deleteOne({_id:post_id}); // Fixed: Use deleteOne instead of deletePost
     return res.json({message:"Post Deleted"})
     } catch (err) {
         return res.status(500).json({message:err.message})
     }
 }
+
 export const commentPost = async(req,res)=>{
     const{token, post_id,commentBody} =req.body;
     try {
@@ -130,18 +131,17 @@ export const delete_comment_of_user = async (req,res)=>{
 
 }
 
-
 export const increment_likes = async (req,res)=>{
     const {post_id} = req.body;
 
     try {
-        const post = Post.findOne({_id:post_id});
+        const post = await Post.findOne({_id:post_id}); // Fixed: Add await
         if(!post){
             return res.status(404).json({message:"Post not found"})
         }
-        post.likes = post.likes +1;
+        post.likes = post.likes + 1;
         await post.save();
-        return res.status(500).json({message:"Likes Incremented!"})
+        return res.status(200).json({message:"Likes Incremented!"}); // Fixed: Return 200 instead of 500
     } catch (error) {
         return res.status(500).json({message:error.message})
     }

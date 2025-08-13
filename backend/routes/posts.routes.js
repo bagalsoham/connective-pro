@@ -37,7 +37,7 @@ router.route("/post").post(upload.single('media'), createPost);
 router.route("/posts").get(getAllPosts);
 
 // Delete a post
-router.route("/delete_post").post(deletePost);
+router.route("/delete_post").delete(deletePost);
 
 
 router.route("/comment").post(commentPost);

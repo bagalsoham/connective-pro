@@ -3,6 +3,7 @@
 // ============================================================================
 import {
   createPost,
+  incrementPostLike,
   deletePost,
   getAllPost,
 } from "@/config/redux/action/postAction";
@@ -509,10 +510,22 @@ export default function Dashboard() {
                       <div className={styles.postActions}>
                         {/* Like button */}
                         <button
-                          className={`${styles.actionButton} ${
-                            likedPosts.has(post._id) ? styles.liked : ""
+                          className={`${
+                            styles.actionButton || "action-button"
+                          } ${
+                            likedPosts.has(post._id)
+                              ? styles.liked || "liked"
+                              : ""
                           }`}
-                          onClick={() => handleLikePost(post._id)}
+                          onClick={async () => {
+                            await dispatch(
+                              incrementPostLike({
+                                token: localStorage.getItem("token"),
+                                post_id: post._id,
+                              })
+                            );
+                            dispatch(getAllPost());
+                          }}
                         >
                           <svg
                             width="20"

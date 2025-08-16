@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllPost } from "../../action/postAction";
+import { getAllPost, getAllComments } from "../../action/postAction";
 
 const initialState = {
   post: [],
@@ -11,6 +11,8 @@ const initialState = {
   comments: [],
   postId: "",
   isSuccess: false,
+  commentsLoading: false,
+  commentsError: false,
 };
 
 const postSlice = createSlice({
@@ -26,9 +28,15 @@ const postSlice = createSlice({
       state.isError = false;
       state.isSuccess = false;
     },
+    clearComments: (state) => {
+      state.comments = [];
+      state.postId = "";
+      state.commentsError = false;
+    },
   },
   extraReducers: (builder) => {
     builder
+      // getAllPost cases
       .addCase(getAllPost.pending, (state) => {
         state.message = "Fetching all the posts...";
         state.isLoading = true;
@@ -52,9 +60,31 @@ const postSlice = createSlice({
         state.post = [];
         state.message =
           action.payload?.message || action.error?.message || "Failed to fetch posts";
+      })
+      
+      // getAllComments cases
+      .addCase(getAllComments.pending, (state) => {
+        state.commentsLoading = true;
+        state.commentsError = false;
+        state.message = "Fetching comments...";
+      })
+      .addCase(getAllComments.fulfilled, (state, action) => {
+        state.commentsLoading = false;
+        state.commentsError = false;
+        state.comments = action.payload.comments.comments || action.payload.comments.message || [];
+        state.postId = action.payload.post_id;
+        state.message = "Comments fetched successfully";
+        state.isSuccess = true;
+      })
+      .addCase(getAllComments.rejected, (state, action) => {
+        state.commentsLoading = false;
+        state.commentsError = true;
+        state.comments = [];
+        state.message = action.payload || "Failed to fetch comments";
+        state.isError = true;
       });
   },
 });
 
-export const { reset, resetPostId, clearMessage } = postSlice.actions;
+export const { reset, resetPostId, clearMessage, clearComments } = postSlice.actions;
 export default postSlice.reducer;

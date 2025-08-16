@@ -74,3 +74,37 @@ export const incrementPostLike = createAsyncThunk(
     }
   }
 );
+export const getAllComments = createAsyncThunk(
+  "post/getAllComments",
+  async ({ token, postData }, thunkAPI) => {
+    try {
+      const response =await clientServer.get("/posts/get_comments",{
+        params:{
+          post_id:postData.post_id
+        }
+      }); 
+      return thunkAPI.fulfillWithValue({
+        comments:response.data,
+        post_id:postData.post_id
+      })
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const postComment = createAsyncThunk(
+  "post/postComment",
+  async (commentData, thunkAPI) => {
+    try {
+      const response = await clientServer.post("/posts/comment", {
+        token: localStorage.getItem("token"),
+        post_id: commentData.post_id,
+        commentBody: commentData.body // ✅ matches backend key
+      });
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);

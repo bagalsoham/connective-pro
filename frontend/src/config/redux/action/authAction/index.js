@@ -62,22 +62,34 @@ export const getAboutUser = createAsyncThunk(
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }
-);
+);  
 
 export const getAllUsers = createAsyncThunk(
-    "user/getAllUsers",
+    "auth/getAllUsers", // Make sure this matches your slice name
     async (_, thunkAPI) => {
       try {
         const token = localStorage.getItem("token");
-  
-        // ✅ Call the correct backend route
         const response = await clientServer.get("/users/get_all_users", {
-          params: { token }, // Send token as query param if backend expects it like that
+          params: { token },
         });
-  
-        return thunkAPI.fulfillWithValue(response.data); // Send successful response
+        
+        // Transform the profiles into a cleaner format
+        const profiles = response.data.profiles || [];
+        const users = profiles.map(profile => ({
+          id: profile.userId._id,
+          name: profile.userId.name,
+          email: profile.userId.email,
+          profilePic: profile.userId.profilePicture,
+          username: profile.userId.username,
+          bio: profile.bio,
+          currentPost: profile.currentPost,
+          pastWork: profile.pastWork,
+          education: profile.education
+        }));
+        
+        return { users }; // Return in the format your reducer expects
       } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data || "Failed to fetch users");
       }
     }
-  );
+);

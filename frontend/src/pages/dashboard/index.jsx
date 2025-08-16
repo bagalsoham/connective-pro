@@ -6,6 +6,8 @@ import {
   incrementPostLike,
   deletePost,
   getAllPost,
+  getAllComments,
+  postComment,
 } from "@/config/redux/action/postAction";
 import { getAboutUser } from "@/config/redux/action/authAction";
 import { useRouter } from "next/router";
@@ -15,6 +17,7 @@ import UserLayout from "@/layout/UserLayout";
 import DashboardLayout from "@/layout/DashboardLayout";
 import styles from "./index.module.css";
 import { BASE_URL } from "@/config";
+import { reset, resetPostId } from "@/config/redux/reducer/postReducer";
 
 // ============================================================================
 // MAIN DASHBOARD COMPONENT
@@ -40,9 +43,7 @@ export default function Dashboard() {
   const [postContent, setPostContent] = useState(""); // Text content for new post
   const [fileContent, setFileContent] = useState(null); // File attachment for new post
 
-  // Comments functionality states
-  const [showComments, setShowComments] = useState({}); // Track which posts have comments visible
-  const [commentText, setCommentText] = useState({}); // Store comment text for each post
+  const [commentText, setCommentText] = useState(""); // ✅ Declare state
 
   // Post interactions
   const [likedPosts, setLikedPosts] = useState(new Set()); // Track liked posts locally
@@ -89,81 +90,6 @@ export default function Dashboard() {
       }
       setFileContent(file);
     }
-  };
-
-  // ============================================================================
-  // POST INTERACTION HANDLERS
-  // ============================================================================
-
-  /**
-   * Handle post like/unlike functionality
-   * Updates local state immediately for better UX
-   */
-  const handleLikePost = async (postId) => {
-    try {
-      // Optimistic update: toggle like state immediately
-      const newLikedPosts = new Set(likedPosts);
-      if (likedPosts.has(postId)) {
-        newLikedPosts.delete(postId);
-      } else {
-        newLikedPosts.add(postId);
-      }
-      setLikedPosts(newLikedPosts);
-
-      // TODO: Uncomment when backend API is ready
-      // await dispatch(likePost({ post_id: postId }));
-
-      // Refresh posts after a short delay to get updated like count
-      setTimeout(() => {
-        dispatch(getAllPost());
-      }, 500);
-    } catch (error) {
-      console.error("Error liking post:", error);
-    }
-  };
-
-  /**
-   * Toggle comments visibility for a specific post
-   */
-  const toggleComments = (postId) => {
-    setShowComments((prev) => ({
-      ...prev,
-      [postId]: !prev[postId],
-    }));
-  };
-
-  /**
-   * Handle comment submission for a post
-   */
-  const handleComment = async (postId) => {
-    const comment = commentText[postId];
-    if (!comment || !comment.trim()) return;
-
-    try {
-      // TODO: Uncomment when backend API is ready
-      // await dispatch(commentPost({ post_id: postId, commentBody: comment }));
-
-      // Clear the comment input for this post
-      setCommentText((prev) => ({
-        ...prev,
-        [postId]: "",
-      }));
-
-      // Refresh posts to show new comment
-      dispatch(getAllPost());
-    } catch (error) {
-      console.error("Error adding comment:", error);
-    }
-  };
-
-  /**
-   * Handle comment text changes for a specific post
-   */
-  const handleCommentChange = (postId, value) => {
-    setCommentText((prev) => ({
-      ...prev,
-      [postId]: value,
-    }));
   };
 
   // ============================================================================
@@ -508,14 +434,10 @@ export default function Dashboard() {
                       {/* POST ACTIONS (Like, Comment, Share, etc.) */}
                       {/* -------------------------------------------------------- */}
                       <div className={styles.postActions}>
-                        {/* Like button */}
+                        {/* Like button - Using Redux directly */}
                         <button
-                          className={`${
-                            styles.actionButton || "action-button"
-                          } ${
-                            likedPosts.has(post._id)
-                              ? styles.liked || "liked"
-                              : ""
+                          className={`${styles.actionButton} ${
+                            likedPosts.has(post._id) ? styles.liked : ""
                           }`}
                           onClick={async () => {
                             await dispatch(
@@ -541,8 +463,16 @@ export default function Dashboard() {
 
                         {/* Comment button */}
                         <button
+                          type="button"
                           className={styles.actionButton}
-                          onClick={() => toggleComments(post._id)}
+                          onClick={() => {
+                            dispatch(
+                              getAllComments({
+                                token: localStorage.getItem("token"),
+                                postData: { post_id: post._id },
+                              })
+                            );
+                          }}
                         >
                           <svg
                             width="20"
@@ -586,7 +516,7 @@ export default function Dashboard() {
                           <span>Send</span>
                         </button>
 
-                        {/* Delete button (Heroicons Trash) */}
+                        {/* Delete button - Using Redux directly */}
                         <button
                           className={`${styles.actionButton} ${styles.deleteButton}`}
                           onClick={async () => {
@@ -617,82 +547,6 @@ export default function Dashboard() {
                           <span>Delete</span>
                         </button>
                       </div>
-
-                      {/* -------------------------------------------------------- */}
-                      {/* COMMENTS SECTION (Expandable) */}
-                      {/* -------------------------------------------------------- */}
-                      {showComments[post._id] && (
-                        <div className={styles.commentsSection}>
-                          {/* Add new comment input */}
-                          <div className={styles.addComment}>
-                            <img
-                              className={styles.commentProfileImage}
-                              src={
-                                authState.user.userId?.profilePicture
-                                  ? `${BASE_URL}/${authState.user.userId.profilePicture}`
-                                  : `${BASE_URL}/default.jpg`
-                              }
-                              alt="Your Profile"
-                            />
-                            <div className={styles.commentInputContainer}>
-                              <input
-                                type="text"
-                                placeholder="Add a comment..."
-                                value={commentText[post._id] || ""}
-                                onChange={(e) =>
-                                  handleCommentChange(post._id, e.target.value)
-                                }
-                                className={styles.commentInput}
-                                onKeyPress={(e) => {
-                                  if (e.key === "Enter" && !e.shiftKey) {
-                                    e.preventDefault();
-                                    handleComment(post._id);
-                                  }
-                                }}
-                              />
-                              <button
-                                onClick={() => handleComment(post._id)}
-                                className={styles.commentSubmit}
-                                disabled={!commentText[post._id]?.trim()}
-                              >
-                                Post
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Display existing comments */}
-                          {post.comments && post.comments.length > 0 && (
-                            <div className={styles.commentsList}>
-                              {post.comments.map((comment, index) => (
-                                <div key={index} className={styles.comment}>
-                                  <img
-                                    className={styles.commentProfileImage}
-                                    src={
-                                      comment.userId?.profilePicture
-                                        ? `${BASE_URL}/${comment.userId.profilePicture}`
-                                        : `${BASE_URL}/default.jpg`
-                                    }
-                                    alt={comment.userId?.name || "User"}
-                                  />
-                                  <div className={styles.commentContent}>
-                                    <div className={styles.commentHeader}>
-                                      <strong>
-                                        {comment.userId?.name || "Anonymous"}
-                                      </strong>
-                                      <span className={styles.commentTime}>
-                                        {formatTimeAgo(comment.createdAt)}
-                                      </span>
-                                    </div>
-                                    <p className={styles.commentText}>
-                                      {comment.comment}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
                     </article>
                   ))
                 : /* Empty state when no posts exist */
@@ -713,6 +567,93 @@ export default function Dashboard() {
                   )}
             </div>
           </div>
+          {postState.postId !== "" && (
+            <div
+              className={styles.commentsContainer}
+              onClick={() => dispatch(resetPostId())}
+            >
+              <div
+                className={styles.allCommentsContainer}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {postState.comments.length === 0 && (
+                  <h2 className={styles.noCommentsText}>No comments</h2>
+                )}
+
+                {/* ✅ FIXED: Proper image paths for comments */}
+                {postState.comments.length !== 0 && (
+                  <div className={styles.commentsList}>
+                    {postState.comments.map((postComment, index) => (
+                      <div
+                        key={postComment._id || index}
+                        className={styles.singleComment}
+                      >
+                        <div className={styles.singleComment__profileContainer}>
+                          <img
+                            src={
+                              postComment.userId?.profilePicture
+                                ? `${BASE_URL}/${postComment.userId.profilePicture}`
+                                : `${BASE_URL}/default.jpg`
+                            }
+                            alt={`${postComment.userId?.name || 'User'}'s profile`}
+                            className={styles.singleComment__profileImage}
+                            onError={(e) => {
+                              e.target.src = `${BASE_URL}/default.jpg`;
+                            }}
+                          />
+                          <div className={styles.singleComment__userInfo}>
+                            <span className={styles.singleComment__name}>
+                              {postComment.userId?.name || "Unknown User"}
+                            </span>
+                            <span className={styles.singleComment__username}>
+                              @{postComment.userId?.username || "user"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className={styles.singleComment__body}>
+                          {postComment.body}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className={styles.postCommentContainer}>
+                  <input
+                    type="text"
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Write a comment..."
+                  />
+
+                  <div
+                    onClick={async () => {
+                      if (commentText.trim()) {
+                        // ✅ Added validation
+                        await dispatch(
+                          postComment({
+                            post_id: postState.postId,
+                            body: commentText,
+                          })
+                        );
+                        await dispatch(
+                          getAllComments({
+                            token: localStorage.getItem("token"), // ✅ Added token
+                            postData: { post_id: postState.postId },
+                          })
+                        );
+                        setCommentText(""); // ✅ Clear input after posting
+                      }
+                    }}
+                    className={styles.postCommentContainer__Btn}
+                  >
+                    Comment
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </DashboardLayout>
       </UserLayout>
     );

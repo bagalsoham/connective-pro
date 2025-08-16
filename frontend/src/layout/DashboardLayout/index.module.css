@@ -41,3 +41,79 @@
     height: 1.4em;
     min-width: min-content;   /* Samsung Internet 5.0+ */
   }
+  .profileList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .profileCard {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: #f9f9f9;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .profileCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profileCard h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .profileCard p {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+  /* ---- Top Profiles Section ---- */
+.homeContainer__extraContainer {
+  background: #fff;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  flex: 0.2; /* keep consistent with layout */
+  height: fit-content;
+}
+
+.homeContainer__extraContainer h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.homeContainer__extraContainer .profileList {
+  margin-top: 0.8rem;
+}
+
+.homeContainer__extraContainer .profileCard {
+  background: #fafafa;
+  border: 1px solid #eee;
+}
+
+.homeContainer__extraContainer .profileCard:hover {
+  background: #f5f5f5;
+}

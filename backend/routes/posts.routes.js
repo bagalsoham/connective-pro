@@ -44,7 +44,7 @@ router.route("/comment").post(commentPost);
 
 
 // Get comments by post
-router.route("/get_comments").post(get_comments_by_post);
+router.route("/get_comments").get(get_comments_by_post);
 
 // Delete a comment by user
 router.route("/delete_comment").post(delete_comment_of_user);
